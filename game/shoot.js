@@ -28,6 +28,13 @@ function shoot()
     {
         player1.bullets[i].position.x += moveDistance * Math.cos(player1.bullets[i].angle);
         player1.bullets[i].position.y += moveDistance * Math.sin(player1.bullets[i].angle);
+        
+        x_player2 = player2.position.x;
+        y_player2 = player2.position.y;
+        delta1 = Math.abs(player1.bullets[i].position.x - x_player2);
+        delta2 = Math.abs(player1.bullets[i].position.y - y_player2);
+        if (delta1 < 10 && delta2 < 10)
+            player2.dead();
     }
 
 }
@@ -61,6 +68,8 @@ function player_collision()
     var x = player1.graphic.position.x + WIDTH / 2;
     var y = player1.graphic.position.y + HEIGHT / 2;
 
+    if ( x < 0 )
+        player1.graphic.position.x -= x;
     if ( x > WIDTH )
         player1.graphic.position.x -= x - WIDTH;
     if ( y < 0 )
@@ -83,10 +92,12 @@ function player_falling()
     for (var i = 0; i < length; i++) {
         element = noGround[i];
 
-        var tileX = (element[0]) | 0;
-        var tileY = (element[1]) | 0;
-        var mtileX = (element[0] + sizeOfTileX) | 0;
-        var mtileY = (element[1] + sizeOfTileY) | 0;
+        if (element)
+        {
+        var tileX = (element[0] - sizeOfTileX/2) | 0;
+        var tileY = (element[1] - sizeOfTileX/2) | 0;
+        var mtileX = (element[0] + sizeOfTileX/2) | 0;
+        var mtileY = (element[1] + sizeOfTileY/2) | 0;
 
         if ((x > tileX)
             && (x < mtileX)
@@ -95,6 +106,7 @@ function player_falling()
         {
            player1.dead();
         }
+    }
     }
 
 }
